@@ -22,4 +22,4 @@ make
 
 ## Contributors
 
-| Fredy Velasquez | Mariana David
+| Fredy Velasquez | Mariana David | Angel Higueros
