@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package chat;
+
+// REGISTRO DE USUARIOS
+message UserRegistration {
+     string username = 1;
+     string ip = 2;
+}
+
+
+// INFORMACION DEL USUARIO
+message UserInfo {
+     string username = 1;
+     string status = 2;
+     string ip = 3;
+}
+
+
+// SOLICITAR INFORMACION
+// user: (username || everyone)
+message UserRequest {
+     string user = 1;
+}
+
+
+// ENVIADO POR EL SERVIDOR
+message ConnectedUsersResponse {
+    repeated UserInfo connectedUsers = 1;
+}
+
+
+// CAMBIAR DE ESTADO
+// POSIBLES STATUS
+// activo, inactivo, ocupado
+message ChangeStatus {
+     string username = 1;
+     string status = 2;
+}
+
+
+// ENVIO DE MENSAJES (DIRECTOS || BROADCAST)
+// recipient: (username || everyone)
+// sender: username del remitente
+message MessageCommunication {
+     string message = 1;
+     string recipient = 2; 
+     string sender = 3; 
+}
+
+
+// option 1: Registro de Usuarios
+// option 2: Usuarios Conectados
+// option 3: Cambio de Estado
+// option 4: Mensajes
+// option 5: Informacion de un usuario en particular
+// PARA TODOS LOS USUARIOS CONECTADOS MANDAR UN UserRequest con everyone
+// PARA INFO DE UN USUARIO MANDAR UN UserRequest con el username
+message ClientPetition {
+     int32 option = 1;
+
+     UserRegistration registration = 2;
+
+     UserRequest users = 3;
+
+     ChangeStatus change = 4;
+
+     MessageCommunication messageCommunication = 5;
+}
+
+
+// option 1: Registro de Usuarios
+// option 2: Usuarios Conectados
+// option 3: Cambio de Estado
+// option 4: Mensajes
+// option 5: Informacion de un usuario en particular
+// codigo 200: Exito
+// codigo 500: Fallo
+// EN RESPUESTA A UNA SOLICITUD DEL CLIENTE POR EJEMPLO: REGISTRO DE USUARIOS
+// UNICAMENTE RETORNA OPCION, CODIGO Y MENSAJE DEL SERVIDOR
+// PARA SABER SI LA SOLICITUD FUE EXITOSA O FALLO HORRIBLE EL SERVIDOR
+message ServerResponse {
+     int32 option = 1;
+
+     int32 code = 2;
+
+     string serverMessage = 3;
+
+     ConnectedUsersResponse connectedUsers = 4;
+
+     MessageCommunication messageCommunication = 5;
+
+     UserInfo userInfoResponse = 6;
+
+     ChangeStatus change = 7;
+}
